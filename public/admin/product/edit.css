@@ -1,0 +1,13 @@
+.product_image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    padding-top: 10px;
+    margin-right: 20px;
+}
+button {
+    margin-bottom: 50px;
+}
+.listImage {
+    margin-left: 157px;
+}
