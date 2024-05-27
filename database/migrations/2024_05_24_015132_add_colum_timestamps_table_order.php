@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_product_sizes', function (Blueprint $table) {
-            $table->id();
-            $table->integer('product_id');
-            $table->integer('size_id');
+        Schema::table('tb_orders', function (Blueprint $table) {
+            //
             $table->timestamps();
         });
     }
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_product_sizes');
+        Schema::table('tb_orders', function (Blueprint $table) {
+            //
+        });
     }
 };

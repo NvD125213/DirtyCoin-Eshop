@@ -18,29 +18,23 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-3 col-form-label text-md-right">Tên slider:</label>
                             <div class="col-md-9">
-                                <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nhập tên danh mục tại đây!" required>
-                                @error('name')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                                <input id="name" type="text" name="name" class="form-control" placeholder="Nhập tên danh mục tại đây!" required>
+                               
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="content" class="col-md-3 col-form-label text-md-right">Mô tả slider:</label>
                             <div class="col-md-9">
-                                <textarea id="content" class="form-control @error('description') is-invalid @enderror" name="description" rows="3">
+                                <textarea id="content" class="form-control" name="description" rows="3">
                                 </textarea>
-                                @error('description')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                              
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="image_path" class="col-md-3 col-form-label text-md-right">Chọn hình ảnh:</label>
                             <div class="col-md-9">
-                                <input id="link" type="file" name="link" class="form-control-file  @error('link') is-invalid @enderror" required>  
-                                @error('link')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                                <input id="link" type="file" name="link" class="form-control-file " required>  
+                               
                             </div>
                         </div>
                         

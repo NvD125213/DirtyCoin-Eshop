@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tb_slides', function (Blueprint $table) {
+            //
             $table->timestamps();
         });
     }

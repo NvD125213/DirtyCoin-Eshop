@@ -20,6 +20,7 @@ class tb_product extends Model
         'id_Cate',
         'image_path',
         'image_name',
+        'view'
     ];
      
     public function images() {

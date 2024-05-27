@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tb_slides', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::table('tb_sizes', function (Blueprint $table) {
+            //
+            $table->timestamps();
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tb_slides', function (Blueprint $table) {
+        Schema::table('tb_sizes', function (Blueprint $table) {
             //
         });
     }

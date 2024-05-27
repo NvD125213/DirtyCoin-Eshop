@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tb_products', function (Blueprint $table) {
+            //
+            $table->timestamps();
             $table->softDeletes();
         });
     }

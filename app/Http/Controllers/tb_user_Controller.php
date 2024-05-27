@@ -13,23 +13,23 @@ class tb_user_Controller extends Controller
      */
     public function index()
     {
-        //
+        
         return view('Users.login');
     }
 
-    public function postLogin(Request $request) {
-   
-        $remember = $request->has('remember') ? true : false;
-        if (Auth::attempt([
+    public function checkLogin(Request $request) {
+        $creadentials = [
             'email' => $request->email,
-            'password' => $request->password
-        ], $remember)) {
-            return redirect()->to('Admins.home');
-        }
-        else{
+            'password' => $request->password,
 
+        ];
+        Auth::attempt($creadentials);
+        if(Auth::attempt($creadentials)) {
+            return 'success';
         }
-    
+        else {
+            return 'false';
+        }
     }
 
     /**

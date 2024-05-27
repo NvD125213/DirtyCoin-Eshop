@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tb_list_image', function (Blueprint $table) {
-            $table->string('image_name');
+        Schema::table('tb_product_sizes', function (Blueprint $table) {
+            //
             $table->timestamps();
         });
     }
@@ -22,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tb_list_image', function (Blueprint $table) {
-            $table->dropColumn('image_name');
+        Schema::table('tb_product_sizes', function (Blueprint $table) {
+            //
         });
     }
 };

@@ -58,6 +58,22 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{Route('settingIndex')}}" class="nav-link">
+              <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
+              <p>
+                Quản lý setting
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{Route('indexAdmin')}}" class="nav-link">
+              <i class="nav-icon fa fa-cog" aria-hidden="true"></i>
+              <p>
+                Quản lý đơn hàng
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>

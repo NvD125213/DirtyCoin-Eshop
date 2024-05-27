@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoresliderRequest;
+use Illuminate\Http\Request;
 use App\Models\tb_slides;
 use App\Traits\StorageImageTrait;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class tb_slides_Controller extends Controller
@@ -27,20 +26,22 @@ class tb_slides_Controller extends Controller
      */
     public function create()
     {
+
         return view('Slider.add');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoresliderRequest $request)
+    public function store(Request $request)
     {
-        try {
             $data = [
                 'name' => $request->name,
                 'description' => $request->description
             ];
-            $dataImageSlider = $this->storageTraitUpload($request, 'link', 'slider');
+
+            $dataImageSlider = $this->storageTraitUpload($request, 'link', 'slider2');
+
     
             if(!empty($dataImageSlider)) {
                 $data['link'] = $dataImageSlider['file_path'];
@@ -48,12 +49,7 @@ class tb_slides_Controller extends Controller
             }
             $this->slider->create($data);
             return redirect()->route('slider.index');
-    
-        }
-        catch(Exception $ex) {
-            Log::error('Lỗi: ' . $ex->getMessage() . 'Dòng: ' . $ex->getLine());
-        }
-        
+      
     }
 
     /**
@@ -76,7 +72,7 @@ class tb_slides_Controller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoresliderRequest $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             $dataUpdate = [
@@ -121,8 +117,10 @@ class tb_slides_Controller extends Controller
             ], status:500);
         }
     }
-    public function destroy(tb_slides $tb_slides)
-    {
-        //
+    
+    public function getSliderForUser() {
+        $sliders = $this->slider->get();    
+        return view('Users.home', compact('sliders'));
     }
+    
 }

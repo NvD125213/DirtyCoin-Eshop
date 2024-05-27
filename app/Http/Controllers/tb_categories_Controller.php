@@ -18,7 +18,7 @@ class tb_categories_Controller extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    { 
          $category = $this->categories->orderBy('id')->paginate(5);
         return view('categories.index', compact('category'));
     }
@@ -94,11 +94,5 @@ class tb_categories_Controller extends Controller
         return redirect()->route('categories.index')->with('message_delete','Xóa thành công!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(tb_categories $tb_categories)
-    {
-        //
-    }
+  
 }

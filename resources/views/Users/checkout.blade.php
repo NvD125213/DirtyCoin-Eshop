@@ -4,7 +4,8 @@
 @section('content')
     @include('Users.component.wrap-title', ['title' => 'Hợp đồng', 'home' => 'Trang chủ', 'content' => 'Hợp đồng'])
       <div class="container-fluid pt-5">
-        <form action="{{route('createOrder')}}" method="post">
+       
+        <form id="checkoutForm" method="post">
             @csrf
             <div class="row px-xl-5">
                 <div class="col-lg-8">
@@ -105,20 +106,41 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment" id="directcheck" value="directcheck" >
+                                    <input type="radio" class="custom-control-input" name="payment" id="directcheck" value="directcheck" checked >
                                     <label class="custom-control-label" for="directcheck">Sau khi nhận hàng</label>
                                 </div>
                             </div>
                         
                         </div>
                         <div class="card-footer border-secondary bg-transparent">
-                            <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
+                            <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" name="redirect">Place Order</button>
                         </div>
+                       
                     </div>
                 </div>
             </div>
         </form>
+
+        
       
     </div>
 
+@endsection
+@section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById('checkoutForm');
+        const banktransferRadio = document.getElementById('banktransfer');
+        const directcheckRadio = document.getElementById('directcheck');
+
+        // Xử lý sự kiện khi người dùng chọn radio button
+        banktransferRadio.addEventListener('change', function() {
+            form.action = '{{ route("vn_payment") }}';
+        });
+
+        directcheckRadio.addEventListener('change', function() {
+            form.action = '{{ route("createOrder") }}';
+        });
+    });
+</script>
 @endsection

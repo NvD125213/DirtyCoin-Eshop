@@ -10,17 +10,22 @@ class tb_configurations_Controller extends Controller
     /**
      * Display a listing of the resource.
      */
+    private $config;
+    public function __construct(tb_configurations $config) {
+        $this->config = $config;
+    }
     public function index()
     {
-        //
+        $configs = $this->config->orderBy('id')->paginate(5);
+        return view('Settings.index', compact('configs'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('Settings.add');
+
     }
 
     /**
@@ -29,6 +34,11 @@ class tb_configurations_Controller extends Controller
     public function store(Request $request)
     {
         //
+        $this->config->create([
+            'name' => $request->name,
+            'value' => $request->value
+        ]);
+        return redirect()->route('settingIndex')->with('message','Thêm thành công!');
     }
 
     /**
@@ -42,17 +52,29 @@ class tb_configurations_Controller extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(tb_configurations $tb_configurations)
+    public function edit($id)
     {
-        //
+        // Hiện bảng edit
+        $configs = $this->config->findOrFail($id);
+        return view('Settings.edit', compact('configs'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, tb_configurations $tb_configurations)
+    public function update(Request $request, $id)
     {
-        //
+        // Thực hiện update
+        $this->config->find($id)->update([
+            'name' => $request->name,
+            'value' => $request->value
+        ]);
+        return redirect()->route('settingIndex')->with('message_edit','Sửa thành công!');
+
+    }
+    public function delete($id) {
+        $this->config->find($id)->delete();
+        return redirect()->route('settingIndex')->with('message_delete','Xóa thành công!');
     }
 
     /**

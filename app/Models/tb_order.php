@@ -8,13 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class tb_order extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'name',
-        'address',
-        'adress_city',
-        'phone',
-        'code_zip',
-        'email',
-        'payment'
-    ];
+    protected $fillable = ['id','name','address', 'address_city', 'phone', 'code_zip', 'email', 'payment'];
+    
 }

@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tb_product', function (Blueprint $table) {
-            $table->string('feature_image_name')->nullable();
+        Schema::table('tb_configurations', function (Blueprint $table) {
+            //
+            $table->timestamps();
         });
     }
 
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tb_product', function (Blueprint $table) {
-            $table->dropColumn('feature_image_name');
+        Schema::table('tb_configurations', function (Blueprint $table) {
+            //
         });
     }
 };

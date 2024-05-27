@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tb_order', function (Blueprint $table) {
-            $table->string('payment');
+        Schema::table('tb_categories', function (Blueprint $table) {
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tb_order', function (Blueprint $table) {
+        Schema::table('tb_categories', function (Blueprint $table) {
             //
         });
     }

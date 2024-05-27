@@ -14,4 +14,9 @@ class tb_orderdetail extends Model
         'total_price',
         'quantity'
     ];
+    public function getProduct()
+    {
+        return $this->belongsTo(tb_product::class, 'id_Product');
+    }
+
 }

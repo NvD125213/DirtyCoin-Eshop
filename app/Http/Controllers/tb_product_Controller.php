@@ -8,6 +8,7 @@ use App\Components\Recusive;
 use App\Models\tb_list_image;
 use App\Models\tb_product_sizes;
 use App\Models\tb_sizes;
+use App\Models\tb_slides;
 use Illuminate\Http\Request;
 use App\Traits\StorageImageTrait;
 use Exception;
@@ -23,22 +24,67 @@ class tb_product_Controller extends Controller
     private $listImage;
     private $productSize;
     private $size;
+    private $slider;
 
-    public function __construct(tb_categories $categories, tb_product $product, tb_list_image $listImage, tb_product_sizes $productSize, tb_sizes $size) {
+    public function __construct(tb_categories $categories, tb_product $product, tb_list_image $listImage, tb_product_sizes $productSize, tb_sizes $size, tb_slides $slider) {
         $this -> categories = $categories;
         $this -> product = $product;
         $this -> listImage = $listImage;
         $this -> productSize = $productSize;
         $this -> size = $size;
-
+        $this -> slider = $slider;
     }  
     public function index()
     {
-        $products = $this->product->paginate(10); 
+        $products = $this->product->paginate(5); 
+        $sliders = $this->slider->get();
         return view('Products.index', compact('products'));
     }
    
+    public function get_Shop() {
+        $categories = $this->categories->where('parent_id', null)->get();
+        $products = $this->product->paginate(6);
+        return view('Users.shop', [
+            'categories' => $categories,
+            'products' => $products
+        ]);
+    }
+    public function get_Search_Shop() {
+        $categories = $this->categories->where('parent_id', null)->get();
+        $products = $this->product->orderBy('created_at', 'DESC');
+        
+        if($key = request()->key) {
+            $products = $products->where('name', 'like', '%'.$key.'%');
+        }
+    
+        $products = $products->paginate(2)->appends(request()->query());
+    
+        return view('Users.search', [
+            'products' => $products,
+            'categories' => $categories
+        ]);
+    }
+    public function get_Shop_by_Id($id) {
+        $categories = $this->categories->where('parent_id', null)->get();
+        $category = $this->categories->find($id);
+        $products = $this->product->where('id_Cate', $id)->paginate(6);
+        return view('Users.list', [
+            'categories' => $categories,
+            'products' => $products,
+            'category' => $category
+        ]);
+    }
 
+    // Chi tiết
+    public function get_Detail($id) {
+        $categories = $this->categories->where('parent_id', null)->get();
+        $product = $this->product->find($id);
+        $product->increment('view');
+        return view('Users.detail', [
+            'categories' => $categories,
+            'product' => $product
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -60,7 +106,6 @@ class tb_product_Controller extends Controller
      */
     public function store(Request $request)
     {
-       try {
         $dataProductCreate = [
             'name' => $request->name,
             'price' => $request->price,
@@ -70,18 +115,19 @@ class tb_product_Controller extends Controller
             'id_Cate' => $request->id_Cate,
 
        ];
-        $dataUploadFeatureImage = $this->storageTraitUpload($request, 'image_path', 'product');
+        $dataUploadFeatureImage = $this->storageTraitUpload($request, 'image_path', 'product2');
         if(!empty($dataUploadFeatureImage)) {
             $dataProductCreate['image_path'] = $dataUploadFeatureImage['file_path'];
             $dataProductCreate['image_name'] = $dataUploadFeatureImage['file_name'];
 
         }
 
+
         $product = $this->product->create($dataProductCreate);
 
         if($request->hasFile('image')) {
             foreach($request->image as $itemFile) {
-                $dataProductImageDetail = $this->uploadMutiple($itemFile, 'product');
+                $dataProductImageDetail = $this->uploadMutiple($itemFile, 'product2');
                 $product->images()->create([
                     'image' => $dataProductImageDetail['file_path'],
                     'image_name' => $dataProductImageDetail['file_name'],
@@ -101,11 +147,7 @@ class tb_product_Controller extends Controller
             $product->tags()->attach($tagListIds); // Gán tất cả các tag cho sản phẩm
         }
         return redirect()->route('products.index');
-       }
-       catch(Exception $ex) {
-            DB::rollBack();
-            Log::error('Message' . $ex->getMessage() . 'Line: ' . $ex->getLine());
-       }
+       
 
     }
 
@@ -212,9 +254,18 @@ class tb_product_Controller extends Controller
     {
         //
     }
+  
     public function show() {
-        $show = $this->product->latest()->get();
-        return view('Users.home', compact('show'));
+        $show = $this->product->orderBy('created_at', 'desc')->take(4)->get();
+        $sliders = $this->slider->get();
+        $categories = $this->categories->where('parent_id', null)->get();
+        $view = $this->product->latest('view')->take(4)->get();
+        return view('Users.home', [
+            'sliders' => $sliders,
+            'show' => $show,
+            'categories' => $categories,
+            'view' => $view
+        ]);
     }
 
     // public function addToCart(Request $request, $id)
@@ -260,8 +311,13 @@ class tb_product_Controller extends Controller
     }
 
     public function showCart() {
+        $categories = $this->categories->where('parent_id', null)->get();
         $cart = session()->get('Cart');
-        return view('Users.cart', compact('cart'));
+        return view('Users.cart', 
+        [
+            'cart' => $cart,
+            'categories' => $categories   
+        ]);
     }
 
     public function updateToCart(Request $request) {

@@ -2,23 +2,33 @@
 
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\tb_categories_Controller;
+use App\Http\Controllers\tb_configurations_Controller;
 use App\Http\Controllers\tb_order_Controller;
 use App\Http\Controllers\tb_product_Controller;
 use App\Http\Controllers\tb_slides_Controller;
+use App\Http\Controllers\tb_user_Controller;
 use Illuminate\Support\Facades\Route;
 
+Route::prefix('account')->group(function() {
+    Route::get('/login', [tb_user_Controller::class, 'index']);
+    Route::post('/login', [tb_user_Controller::class, 'checkLogin']);
+
+});
 
 Route::resource("/categories",tb_categories_Controller::class);
 Route::resource("/product",tb_product_Controller::class);
-
 Route::post('/vnpay_payment', [PaymentController::class, 'vn_payment'])->name('vn_payment');
+Route::get('/vnpaycheck', [PaymentController::class, 'vnpaycheck'])->name('vnpaycheck');
 
 Route::prefix('shop')->group(function() {
     Route::get('/homepage', [
         tb_product_Controller::class,
         'show'
     ])->name('Users.home');
+
+    Route::get('/shop', [tb_product_Controller::class, 'get_Shop'])->name('get_Shop');
   
+    Route::get('/search', [tb_product_Controller::class, 'get_Search_Shop'])->name('getSearch');
     Route::get('/cart', [
         tb_product_Controller::class,
         'showCart'
@@ -41,6 +51,13 @@ Route::prefix('shop')->group(function() {
         Route::post('/', [ tb_order_Controller::class, 'store'] )->name('createOrder');
         Route::get('/infor', [tb_order_Controller::class, 'infor'] )->name('inforOrder');
     });
+
+    Route::prefix('category')->group(function() {
+        Route::get('/{id}', [tb_product_Controller::class, 'get_Shop_by_Id'])->name('getShopById'); 
+    });
+    Route::get('/detail/{id}', [ tb_product_Controller::class, 'get_Detail'] )->name('getDetail');
+
+
 });
 
 Route::get('/home', function() {
@@ -140,7 +157,21 @@ Route::prefix('slider')->group(function() {
         'delete'
     ])->name('slider.delete');
  });
+
+ // Quản lý settings
+ Route::prefix('setting')->group(function() {
+    Route::get('/index',[tb_configurations_Controller::class,'index'])->name('settingIndex');
+    Route::get('/add',[tb_configurations_Controller::class,'create'])->name('settingAdd');
+    Route::post('/store',[tb_configurations_Controller::class,'store'])->name('settingStore');
+    Route::get('/edit/{id}',[tb_configurations_Controller::class,'edit'])->name('settingEdit');
+    Route::post('/update/{id}',[tb_configurations_Controller::class,'update'])->name('settingUpdate');
+    Route::get('/delete/{id}',[tb_configurations_Controller::class,'delete'])->name('settingDelete');
+
+ });
  
+ Route::prefix('order')->group(function() {
+    Route::get('', [tb_order_Controller::class, 'indexAdmin'])->name('indexAdmin');
+ });
 
 
 

@@ -12,7 +12,7 @@
         </div>
         <div class="col-lg-6 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
-                <a class="text-dark px-2" href="">
+                <a class="text-dark px-2" target="_blank" href="{{getConfigValueSetting('Facebook')}}">
                     <i class="fab fa-facebook-f"></i>
                 </a>
                 <a class="text-dark px-2" href="">
@@ -21,7 +21,7 @@
                 <a class="text-dark px-2" href="">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                <a class="text-dark px-2" href="">
+                <a class="text-dark px-2" target="_blank" href="{{getConfigValueSetting('Instagram')}}">
                     <i class="fab fa-instagram"></i>
                 </a>
                 <a class="text-dark pl-2" href="">
@@ -37,9 +37,9 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
+            <form action="{{route('getSearch')}}">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" class="form-control" name="key" placeholder="Search for products">
                     <div class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
@@ -54,7 +54,7 @@
                 <span class="badge">0</span>
             </a>
            
-            <a href="" class="btn border">
+            <a href="{{Route('Users.cart')}}" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
                 <span class="badge" id="cart-item-count"></span>
             </a>

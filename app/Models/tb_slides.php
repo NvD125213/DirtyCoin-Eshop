@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class tb_slides extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'name', 
-        'description',
-        'link',
-        'image'
-    ];
+    protected $fillable = ['name','description','link','image'];
      
 }

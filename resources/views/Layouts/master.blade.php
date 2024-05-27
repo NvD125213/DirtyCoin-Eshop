@@ -31,7 +31,9 @@
     @include('Users.component.setting')
 
     @include('Users.component.header')
- 
+    @yield('features')
+    @yield('category')
+
     @yield('content')
    
 
@@ -54,8 +56,21 @@
     @yield('js')
    
     <script>
-      
-          function AddCart(id) {
+        function getIdFromCurrentURL() {
+            // Lấy URL hiện tại
+            var currentURL = window.location.href;
+            // Sử dụng các phương pháp phù hợp để lấy id từ URL, ví dụ:
+            var id = currentURL.split('/').pop(); // Lấy phần cuối cùng của URL là id
+            return id;
+        }
+        function getIdFromDetailRoute() {
+            // Lấy id từ URL hiện tại hoặc từ bất kỳ cách nào phù hợp với ứng dụng của bạn
+            var id = getIdFromCurrentURL();
+             // Gọi hàm AddCart với id đã lấy được
+            AddCart(id);
+        }
+
+        function AddCart(id) {
             $.ajax({
                 url:'addCart/' + id,
                 type: 'GET',
@@ -67,6 +82,37 @@
                 }
             })
         }
+      // JavaScript (jQuery)
+        $(document).ready(function() {
+            // Tắt các sự kiện dropdown mặc định của Bootstrap
+            $('.custom-dropdown-toggle').off('click.bs.dropdown');
+        
+            $('.nav-item .custom-dropdown-toggle').on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).next('.dropdown-menu').slideToggle(150);
+                $(this).parent().siblings().find('.dropdown-menu').slideUp(150); // Đóng các dropdown khác
+            });
+        
+            $('.dropdown-menu .custom-dropdown-toggle').on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).next('.dropdown-menu').slideToggle(150);
+                $(this).siblings('.dropdown-menu').slideUp(150); // Đóng các dropdown con khác cùng cấp
+            });
+        
+            // Đóng các dropdown khi nhấp ra ngoài
+            $(document).on('click', function() {
+                $('.dropdown-menu').slideUp(150);
+            });
+        
+            // Ngăn chặn sự kiện click lan truyền từ dropdown lên document
+            $('.dropdown-menu').on('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+
     </script>
 </body>
 
